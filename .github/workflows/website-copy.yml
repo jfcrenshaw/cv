@@ -7,7 +7,7 @@ jobs:
     - name: Copycat
       uses: andstor/copycat-action@v3
       with:
-        personal_token: ${{ secrets.epyc }}
+        personal_token: ${{ secrets.PERSONAL_TOKEN }}
         src_path: build/cv.pdf
         dst_path: assets/cv.pdf
         dst_owner: jfcrenshaw
