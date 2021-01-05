@@ -8,8 +8,8 @@ jobs:
       uses: andstor/copycat-action@v3
       with:
         personal_token: ${{ secrets.epyc }}
-        src_path: /build/cv.pdf
-        dst_path: /assets/cv.pdf
+        src_path: build/cv.pdf
+        dst_path: assets/cv.pdf
         dst_owner: jfcrenshaw
         dst_repo_name: jfcrenshaw.github.io
         dst_branch: master
