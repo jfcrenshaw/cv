@@ -1,0 +1,17 @@
+name: Copy
+on: push
+jobs:
+  copy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Copycat
+      uses: andstor/copycat-action@v3
+      with:
+        personal_token: ${{ secrets.PERSONAL_TOKEN }}
+        src_path: /build/cv.pdf
+        dst_path: /assets/cv.pdf
+        dst_owner: jfcrenshaw
+        dst_repo_name: jfcrenshaw.github.io
+        dst_branch: master
+        src_branch: main
+        username: copycat-bot
