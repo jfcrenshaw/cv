@@ -49,9 +49,14 @@
 % Default font is the helvetica postscript font
 \usepackage{helvet}
 \usepackage{etaremune}
-\usepackage{enumitem,kantlipsum}
+\usepackage{enumitem, kantlipsum}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[hidelinks, colorlinks=true, allcolors=NavyBlue]{hyperref}
 
 \newcommand{\comment}[1]{}
+\newcommand{\paper}[2]{\href{#1}{\sc #2}}
+%\newcommand{\link}[1]{}
+%\newcommand{\paper}[2]{\href{#1}{\sc \color{RoyalBlue} #2}}
 
 % Increase text height
 \textheight=700pt
@@ -66,89 +71,112 @@
 %-------------------------------------------------------------------------------
 %	CONTACT INFO
 %-------------------------------------------------------------------------------
-\section{\normalfont CONTACT INFORMATION}
+\section{Contact Information}
 {Email: jfc20@uw.edu            \hfill University of Washington Physics Dept \\
-Web: jfcrenshaw.github.io       \hfill Box 351560 \\
-ORCID: 0000-0002-2495-3514      \hfill Seattle, WA 98195}
+Web: \href{https://jfcrenshaw.github.io}{jfcrenshaw.github.io}       \hfill Box 351560 \\
+ORCID: \href{https://orcid.org/0000-0002-2495-3514} {0000-0002-2495-3514}     \hfill Seattle, WA 98195}
 
 %-------------------------------------------------------------------------------
 %	EDUCATION SECTION
 %-------------------------------------------------------------------------------
-\section{\normalfont EDUCATION}
+\section{Education}
 
 \textbf{University of Washington}, Seattle, WA USA\\
-Ph.D. Physics, expected May 2025\\
-%M.S., Physics, December 2020\\
+Ph.D. in Physics, expected May 2025\\
+M.S., Physics, December 2020\\
 Advisor: Andrew Connolly
 
 \textbf{Duke University}, Durham, NC USA \\
 B.S. in Physics, May 2019\\
 \textit{summa cum laude} with Highest Distinction \\
 Advisor: Kate Scholberg \\
-Thesis: \textit{Sensitivity of the Helium and Lead Observatory to CCSN Neutrino Bursts}
+Thesis: \href{https://jfcrenshaw.github.io/assets/thesis-duke.pdf}{Sensitivity of the Helium and Lead Observatory to Core-Collapse \\ \hspace*{11.4mm} Supernova Neutrino Bursts}
 
 %-------------------------------------------------------------------------------
 %	RESEARCH EXPERIENCE
 %-------------------------------------------------------------------------------
-\section{\normalfont RESEARCH EXPERIENCE}
+\section{Research Experience}
 
-\textbf{Graduate Researcher,} DIRAC Institute, University of Washington \hfill Aug 2019 - \\
-Dark Energy Science Collaboration (DESC), Vera C. Rubin Observatory \\
+\textbf{Graduate Research Assistant} \hfill Aug 2019 -- \\
+DiRAC Institute, University of Washington \\
+Vera C. Rubin Observatory \\
+Dark Energy Science Collaboration (DESC) \\
+Informatics and Statistics Science Collaboration (ISSC) \\
 Advisor: Andrew Connolly
 
-\textbf{Undergraduate Researcher,} Duke University \hfill Aug 2016 - May 2019 \\
-Duke Neutrino and Cosmology Group \\
+\textbf{Undergraduate Research Assistant} \hfill Aug 2016 -- May 2019 \\
+Duke University, Neutrino and Cosmology Group \\
 HALO Supernova Neutrino Detector \\
 Advisor: Kate Scholberg 
 
-\textbf{Undergraduate Researcher,} Karlsruhe Institute of Technology \hfill May - Aug 2018 \\
-Institute for Nuclear Physics \\
+\textbf{Undergraduate Research Assistant}  \hfill May - Aug 2018 \\
+Karlsruhe Institute of Technology, Institute for Nuclear Physics \\
 IceTop Cosmic Ray Detector \\
 Advisor: Andreas Haungs
 
 %-------------------------------------------------------------------------------
 %	FELLOWSHIPS & AWARDS
 %-------------------------------------------------------------------------------
-\section{\normalfont FELLOWSHIPS \& AWARDS}
-\textbullet{} DOE Scholar \hfill 2021 \\
-\textbullet{} NSF Graduate Research Fellowship Honorable Mention \hfill 2021 \\
-\textbullet{} Duke Faculty Scholar \hfill 2018 - 2019 \\
-\textbullet{} Daphne Chang Memorial Award, Duke Physics Department \hfill 2019 \\
-\textbullet{} Highest Distinction for Undergraduate Thesis Research \hfill 2019 \\
-\textbullet{} DAAD RISE Research Exchange Scholarship \hfill 2018 \\
+\section{Fellowships \& Awards}
+Rubin Observatory ISSC Ambassador \hfill 2021 \\
+DOE Scholar \hfill 2021 \\
+NSF Graduate Research Fellowship Honorable Mention \hfill 2021 \\
+Duke Faculty Scholar \hfill 2018 -- 2019 \\
+Daphne Chang Memorial Award, Duke Physics Department \hfill 2019 \\
+Highest Distinction for Undergraduate Thesis Research \hfill 2019 \\
+DAAD RISE Research Exchange Scholarship \hfill 2018 \\
 
 %-------------------------------------------------------------------------------
-%	PUBLICATIONS
+%	FIRST AUTHOR PUBLICATIONS
 %-------------------------------------------------------------------------------
-\section{\normalfont PUBLICATIONS}
+\section{First Author Publications}
+
+\begin{etaremune}[leftmargin=0pt]
+
+\item \paper{https://ui.adsabs.harvard.edu/abs/2020AJ....160..191C/abstract}{Learning Spectral Templates for Photometric Redshift Estimation from Broadband Photometry} \\
+\textbf{Crenshaw, J.F.} \& Connolly, A.J. 2020 \textit{AJ}, 160, 191.
+
+\end{etaremune}
+
+%-------------------------------------------------------------------------------
+%	OTHER PUBLICATIONS
+%-------------------------------------------------------------------------------
+\section{Co-Author Publications}
+
+\begin{etaremune}[leftmargin=0pt]
+
+\item \paper{https://ui.adsabs.harvard.edu/abs/2022arXiv220212775S/abstract}{The Sensitivity of GPz Estimates of Photo-z Posterior PDFs to Realistically Complex Training Set Imperfections} \\
+Stylianou, N., Malz, A., Hatfield, P., \textbf{Crenshaw, J.F.}, Gschwend, J. \textit{PASP in press} (2022)
+
+\item \paper{https://arxiv.org/abs/2104.08229}{An information-based metric for observing strategy optimization, demonstrated in the context of photometric redshifts with applications to cosmology} \\
+Malz, A.I., Lanusse, F., \textbf{Crenshaw, J.F.}, Graham, M.L. \textit{arXiv} (2021)
+
+\end{etaremune}
+
+%-------------------------------------------------------------------------------
+%	INVITED TALKS
+%-------------------------------------------------------------------------------
+\section{Invited Talks}
 
 \hangindent=2mm
-\textbf{Crenshaw, J.F.} \& Connolly, A.J. 2020 \textit{AJ}, 160, 191. \textit{Learning Spectral Templates for Photometric Redshift Estimation from Broadband Photometry}
+DESC Winter Meeting (\textit{online}) \hfill Feb 2021 \\ \href{https://docs.google.com/presentation/d/179O1gnQpVfbIwZLfi7TlW8gYhP3K4MFBbi_8lAighNs/edit?usp=sharing}{Deep Generative Modeling for the Photo-z RAIL Pipeline}
 
 \vspace{-3.5mm} \hangindent=2mm
-Malz, A.I., Lanusse, F., \textbf{Crenshaw, J.F.}, Graham, M.L. 2021 arXiv:2104.08229. \textit{An information-based metric for observing strategy optimization, demonstrated in the context of photometric redshifts with applications to cosmology}
+Gruen Weak Lensing Group, KIPAC, SLAC National Lab (\textit{online}) \hfill Sep 2020 \\ \textit{Deconvolving Galaxy Spectra from Broadband Photometry} \\
 
 %-------------------------------------------------------------------------------
-%	SEMINARS AND COLLOQUIA
+%	CONTRIBUTED TALKS
 %-------------------------------------------------------------------------------
-\section{\normalfont INVITED SEMINARS \& COLLOQUIA}
+\section{Contributed \\Talks}
 
-Gruen Weak Lensing Group, KIPAC, SLAC National Lab (\textit{online}) \hfill Sep 2020 \\
-\textit{Deconvolving Galaxy Spectra from Broadband Photometry} \\
-
-%-------------------------------------------------------------------------------
-%	CONFERENCE TALKS
-%-------------------------------------------------------------------------------
-\section{\normalfont CONFERENCE \\TALKS}
-
-DESC Winter Meeting (\textit{online}) \hfill Feb 2020 \\
+DESC Winter Meeting (\textit{online}) \hfill Feb 2021 \\
 Rubin Observatory Project \& Community Workshop (\textit{online}) \hfill July 2020 \\
 DESC Winter Meeting (\textit{Tucson, AZ}) \hfill Jan 2020 \\
 
 %-------------------------------------------------------------------------------
 %	POSTERS
 %-------------------------------------------------------------------------------
-\section{\normalfont RESEARCH POSTERS}
+\section{Research \\Posters}
 
 AAS 238th Meeting (\textit{online}) \hfill June 2021 \\
 SCMA VII Meeting (\textit{online}) \hfill June 2021 \\
@@ -159,41 +187,43 @@ Neutrino 2018 (\textit{Heidelberg, Germany}) \hfill June 2018 \\
 %-------------------------------------------------------------------------------
 %	TEACHING
 %-------------------------------------------------------------------------------
-\section{\normalfont TEACHING EXPERIENCE}
+\section{Teaching Experience}
 
-Graduate Reading Course Instructor, $\Lambda$CDM Cosmology \hfill March 2021 - \\
-Teaching Assistant, Intro Physics Courses, Duke University \hfill Aug 2016 - May 2019 \\
-Physics and Math Tutor, Duke University \hfill Jan 2016 - May 2019 \\
+Undergraduate Reading Course Instructor, $\Lambda$CDM Cosmology \hfill 2021 -- \\
+Teaching Assistant, Intro Physics Courses, Duke University \hfill 2016 -- 2019 \\
+Physics and Math Tutor, Duke University \hfill 2016 -- 2019 \\
 
 %-------------------------------------------------------------------------------
 %	OUTREACH
 %-------------------------------------------------------------------------------
-\section{\normalfont SELECTED OUTREACH}
+\section{Outreach}
 
-University of Washington STEM Pals organizer \hfill 2021 - 
-\begin{itemize}
-    \item I develop and maintain pedagogical simulations to demonstrate how computational methods are used in research.
-\end{itemize}
+STEM Pals organizer \& pedagogical simulation developer  \hfill 2021 \\
+Duke University Teaching Observatory, volunteer \hfill 2018 -- 2019 \\
+Duke University Public Lecture: \textit{Where Did We Come From} \\
+\hspace*{4mm} \textit{and Are We Alone: cosmic origins and the search for life} \hfill January 2018
+
+
 
 %-------------------------------------------------------------------------------
 %	LEADERSHIP
 %-------------------------------------------------------------------------------
-\section{\normalfont DEPARTMENT \& UNIVERSITY LEADERSHIP}
+\section{Service \& Leadership}
 
-Physicists for Inclusion and Equity (PIE) Officer, UW \hfill 2020 - \\
+Physicists for Inclusion and Equity (PIE) Officer, UW \hfill 2020 -- 2021 \\
 Departmental Review Student Committee, Duke Physics Department \hfill 2018 \\
 
 %-------------------------------------------------------------------------------
 %	OUTREACH
 %-------------------------------------------------------------------------------
-\section{\normalfont OBSERVING EXPERIENCE}
+%\section{\normalfont OBSERVING EXPERIENCE}
 
-Apache Point Observatory - 3.5 m, DIS: 3 nights \\
+%Apache Point Observatory - 3.5 m, DIS: 3 nights \\
 
 %-------------------------------------------------------------------------------
 %	PROFESSIONAL SOCIETIES
 %-------------------------------------------------------------------------------
-\section{\normalfont PROFESSIONAL SOCIETIES}
+\section{Professional Societies}
 
 American Astronomical Society (AAS) \\
 American Physical Society (APS) \\
