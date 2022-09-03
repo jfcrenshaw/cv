@@ -44,7 +44,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \let\latexnofiles\nofiles
 \let\nofiles\relax
-\documentclass[margin]{res}  
+\documentclass[margin, 11pt]{res}  
 
 % Default font is the helvetica postscript font
 \usepackage{helvet}
@@ -55,15 +55,13 @@
 
 \newcommand{\comment}[1]{}
 \newcommand{\paper}[2]{\href{#1}{\sc #2}}
-%\newcommand{\link}[1]{}
-%\newcommand{\paper}[2]{\href{#1}{\sc \color{RoyalBlue} #2}}
 
 % Increase text height
-\textheight=700pt
+%\textheight=700pt
 
 \begin{document}
 
-\name{John Franklin Crenshaw}
+\name{\Large John Franklin Crenshaw}
 %-------------------------------------------------------------------------------
 
 \begin{resume}
@@ -89,39 +87,45 @@ Advisor: Andrew Connolly
 \textbf{Duke University}, Durham, NC USA \\
 B.S. in Physics, May 2019\\
 \textit{summa cum laude} with Highest Distinction \\
-Advisor: Kate Scholberg \\
-Thesis: \href{https://jfcrenshaw.github.io/assets/thesis-duke.pdf}{Sensitivity of the Helium and Lead Observatory to Core-Collapse \\ \hspace*{11.4mm} Supernova Neutrino Bursts}
+Advisor: Kate Scholberg
+
 
 %-------------------------------------------------------------------------------
 %	RESEARCH EXPERIENCE
 %-------------------------------------------------------------------------------
 \section{Research Experience}
 
-\textbf{Graduate Research Assistant} \hfill Aug 2019 -- \\
-DiRAC Institute, University of Washington \\
-Vera C. Rubin Observatory \\
-Dark Energy Science Collaboration (DESC) \\
-Informatics and Statistics Science Collaboration (ISSC) \\
+\textbf{Dark Energy Science Collaboration (DESC)} \hfill 2019 - present \\
+Developing the photometric redshift pipeline for DESC cosmology \\
+Deconvolving galaxy spectra from photometry and studying galaxy evolution \\
+Photometric measurements of the intergalactic and circumgalactic media \\
 Advisor: Andrew Connolly
 
-\textbf{Undergraduate Research Assistant} \hfill Aug 2016 -- May 2019 \\
-Duke University, Neutrino and Cosmology Group \\
-HALO Supernova Neutrino Detector \\
-Advisor: Kate Scholberg 
+\textbf{The Vera C. Rubin Observatory} \hfill 2021 - present \\
+Commissioning the active optics system \\
+Developing deep learning methods to improve telescope wavefront estimation \\
+Leading photometric redshift commissioning efforts \\
+Advisors: Andrew Connolly and Sandrine Thomas
 
-\textbf{Undergraduate Research Assistant}  \hfill May - Aug 2018 \\
-Karlsruhe Institute of Technology, Institute for Nuclear Physics \\
-IceTop Cosmic Ray Detector \\
+\textbf{Duke University Neutrino and Cosmology Group} \hfill 2016 - 2019 \\
+Simulating core-collapse supernova neutrino bursts \\
+Characterizing the sensitivity of the Helium and Lead Observatory (HALO) \\
+Advisor: Kate Scholberg
+
+\textbf{Karlsruhe Institute of Technology} \hfill 2018 \\
+Studying muon content of cosmic rays detected with the IceTop Array \\
+Developing machine learning methods for data analysis \\
 Advisor: Andreas Haungs
+
 
 %-------------------------------------------------------------------------------
 %	FELLOWSHIPS & AWARDS
 %-------------------------------------------------------------------------------
 \section{Fellowships \& Awards}
-Rubin Observatory ISSC Ambassador \hfill 2021 -- 2022 \\
+Rubin Observatory ISSC Ambassador \hfill 2021 - 2022 \\
 DOE Scholar \hfill 2021 \\
 NSF Graduate Research Fellowship Honorable Mention \hfill 2021 \\
-Duke Faculty Scholar \hfill 2018 -- 2019 \\
+Duke Faculty Scholar \hfill 2018 - 2019 \\
 Daphne Chang Memorial Award, Duke Physics Department \hfill 2019 \\
 Highest Distinction for Undergraduate Thesis Research \hfill 2019 \\
 DAAD RISE Research Exchange Scholarship \hfill 2018 \\
@@ -129,6 +133,7 @@ DAAD RISE Research Exchange Scholarship \hfill 2018 \\
 %-------------------------------------------------------------------------------
 %	FIRST AUTHOR PUBLICATIONS
 %-------------------------------------------------------------------------------
+\newpage
 \section{First Author Publications}
 
 \begin{etaremune}[leftmargin=0pt]
@@ -145,8 +150,11 @@ DAAD RISE Research Exchange Scholarship \hfill 2018 \\
 
 \begin{etaremune}[leftmargin=0pt]
 
+\item \paper{https://ui.adsabs.harvard.edu/abs/2022arXiv220602815L/abstract}{The Simulated Catalogue of Optical Transients and Correlated Hosts (SCOTCH)} \\
+Lokken, M., Gagliano, A., Narayan, G., Hložek, R., Kessler, R., \textbf{Crenshaw, J. F.}, Salo, L., Alves, C. S., Chatterjee, D., Vincenzi, M., Malz, A. \textit{MNRAS, submitted} (2022)
+
 \item \paper{https://ui.adsabs.harvard.edu/abs/2022arXiv220212775S/abstract}{The Sensitivity of GPz Estimates of Photo-z Posterior PDFs to Realistically Complex Training Set Imperfections} \\
-Stylianou, N., Malz, A., Hatfield, P., \textbf{Crenshaw, J.F.}, Gschwend, J. \textit{PASP in press} (2022)
+Stylianou, N., Malz, A., Hatfield, P., \textbf{Crenshaw, J.F.}, Gschwend, J. \textit{PASP} (2022)
 
 \item \paper{https://arxiv.org/abs/2104.08229}{An information-based metric for observing strategy optimization, demonstrated in the context of photometric redshifts with applications to cosmology} \\
 Malz, A.I., Lanusse, F., \textbf{Crenshaw, J.F.}, Graham, M.L. \textit{arXiv} (2021)
@@ -159,11 +167,15 @@ Malz, A.I., Lanusse, F., \textbf{Crenshaw, J.F.}, Graham, M.L. \textit{arXiv} (2
 \section{Invited Talks}
 
 \hangindent=2mm
-AAS Astronomers Turned Data Scientists (ATDS) Meeting (\textit{online}) \hfill March 2022 \\
+DESC Summer Meeting (\textit{Chicago}) \hfill Aug 2022 \\
+\href{https://docs.google.com/presentation/d/1XIaaf1TzgIAM4Hg7VIUtnKwvI75EPUbHzXDIjFfOA2o/edit?usp=sharing}{Seeing the Forest for the Trees: Detecting a Photometric Lyman-$\alpha$ Signal \\with the Vera Rubin Observatory}
+
+\vspace{-3.5mm} \hangindent=2mm
+AAS Astronomers Turned Data Scientists (ATDS) Meeting (\textit{online}) \hfill Mar 2022 \\
 \href{https://docs.google.com/presentation/d/18cWynQW9p8bEPS6NMueZ4mKaEEmNdxUPhsXArGV5Cb8/edit?usp=sharing}{Simulating Astronomical Data with True Posteriors using Normalizing Flows}
 
 \vspace{-3.5mm} \hangindent=2mm
-DESC Winter Meeting (\textit{online}) \hfill Feb 2022 \\ \href{https://docs.google.com/presentation/d/179O1gnQpVfbIwZLfi7TlW8gYhP3K4MFBbi_8lAighNs/edit?usp=sharing}{Deep Generative Modeling for the Photo-z RAIL Pipeline}
+Plenary Talk, DESC Winter Meeting (\textit{online}) \hfill Feb 2022 \\ \href{https://docs.google.com/presentation/d/179O1gnQpVfbIwZLfi7TlW8gYhP3K4MFBbi_8lAighNs/edit?usp=sharing}{Deep Generative Modeling for the Photo-z RAIL Pipeline}
 
 \vspace{-3.5mm} \hangindent=2mm
 Gruen Weak Lensing Group, KIPAC, SLAC National Lab (\textit{online}) \hfill Sep 2020 \\ \textit{Deconvolving Galaxy Spectra from Broadband Photometry} \\
@@ -174,7 +186,7 @@ Gruen Weak Lensing Group, KIPAC, SLAC National Lab (\textit{online}) \hfill Sep 
 \section{Contributed \\Talks}
 
 DESC Winter Meeting (\textit{online}) \hfill Feb 2021 \\
-Rubin Observatory Project \& Community Workshop (\textit{online}) \hfill July 2020 \\
+Rubin Observatory Project \& Community Workshop (\textit{online}) \hfill Jul 2020 \\
 DESC Winter Meeting (\textit{Tucson, AZ}) \hfill Jan 2020 \\
 
 %-------------------------------------------------------------------------------
@@ -182,44 +194,55 @@ DESC Winter Meeting (\textit{Tucson, AZ}) \hfill Jan 2020 \\
 %-------------------------------------------------------------------------------
 \section{Research \\Posters}
 
-AAS 238th Meeting (\textit{online}) \hfill June 2021 \\
-SCMA VII Meeting (\textit{online}) \hfill June 2021 \\
-Duke Physics Undergraduate Research Symposium (\textit{Durham, NC}) \hfill April 2019 \\
-5th Joint Meeting of APS and Physical Society of Japan (\textit{Waikoloa, HI}) \hfill Oct 2018 \\
-Neutrino 2018 (\textit{Heidelberg, Germany}) \hfill June 2018 \\
+AAS 238th Meeting (\textit{online}) \hfill Jun 2021 \\
+SCMA VII Meeting (\textit{online}) \hfill Jun 2021 \\
+Duke Physics Research Symposium (\textit{Durham, NC}) \hfill Apr 2019 \\
+5th Joint Meeting of APS and Phys. Soc. of Japan (\textit{Waikoloa, HI}) \hfill Oct 2018 \\
+Neutrino 2018 (\textit{Heidelberg, Germany}) \hfill Jun 2018 \\
 
 %-------------------------------------------------------------------------------
 %	TEACHING
 %-------------------------------------------------------------------------------
 \section{Teaching Experience}
 
-Undergraduate Reading Course Instructor, $\Lambda$CDM Cosmology \hfill 2021 -- \\
-Teaching Assistant, Intro Physics Courses, Duke University \hfill 2016 -- 2019 \\
-Physics and Math Tutor, Duke University \hfill 2016 -- 2019 \\
+\textbf{Reading Course Instructor, University of Washington} \hfill 2021 - present \\
+Independently designed syllabi and taught advanced reading courses to undergraduates, including \textit{Tensions in $\Lambda$CDM Cosmology} (2021-2022) and \textit{Gravitational Lensing: From Exoplanets to Large Scale Structure} (2022 -- present).
+
+\textbf{Teaching Assistant, Duke University} \hfill 2016 - 2019 \\
+Led lab and discussion sections and gave lectures covering introductory mechanics, fluid dynamics, electromagnetism, and optics.
+
+\textbf{Undergraduate Tutor, Duke University} \hfill 2016 - 2019 \\
+Worked as a tutor for introductory physics, modern physics, calculus I - III, and linear algebra.
 
 %-------------------------------------------------------------------------------
 %	OUTREACH
 %-------------------------------------------------------------------------------
 \section{Outreach}
 
-STEM Pals organizer \& pedagogical simulation developer  \hfill 2021 \\
-Duke University Teaching Observatory, volunteer \hfill 2018 -- 2019 \\
+Graduate Student Research Panel, UC Berkeley \hfill Jul 2021 \\
+STEM Pals organizer \& pedagogical simulation lead  \hfill 2021 \\
+Duke University Teaching Observatory, volunteer \hfill 2018 - 2019 \\
+``Queer in Research'' Discussion Panel \hfill Oct 2018 \\
 Duke University Public Lecture: \textit{Where Did We Come From} \\
-\hspace*{4mm} \textit{and Are We Alone: cosmic origins and the search for life} \hfill January 2018
+\hspace*{4mm} \textit{and Are We Alone: Cosmic Origins and the Search for Life} \hfill Jan 2018
 
 
 
 %-------------------------------------------------------------------------------
-%	LEADERSHIP
+%	SERVICE & LEADERSHIP
 %-------------------------------------------------------------------------------
 \section{Service \& Leadership}
 
-Undergraduate Reading Course Leadership Committee, UW \hfill 2022 -- \\
+Physics Undergraduate Reading Course \\
+\hspace*{4mm} Leadership Committee, University of Washington \hfill 2022 -- present \\
+Photo-z Commissioning Organizer, 2022 Rubin Observatory \\ 
+\hspace*{4mm} Project and Community Workshop (\textit{Tucson, AZ}) \hfill Aug 2022 \\
+Snowmass 2021 Summer Study, Organizing Volunteer \hfill Jul 2022 \\
 Physicists for Inclusion and Equity (PIE) Officer, UW \hfill 2020 -- 2021 \\
 Departmental Review Student Committee, Duke Physics Department \hfill 2018 \\
 
 %-------------------------------------------------------------------------------
-%	OUTREACH
+%	OBSERVING
 %-------------------------------------------------------------------------------
 %\section{\normalfont OBSERVING EXPERIENCE}
 
