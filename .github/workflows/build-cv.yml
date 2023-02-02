@@ -1,0 +1,31 @@
+name: build CV
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Git repository
+        uses: actions/checkout@v3
+
+      - name: Compile LaTeX
+        uses: xu-cheng/latex-action@v2
+        with:
+          root_file: cv.tex
+
+      - name: Move PDF
+        run: mkdir build && mv cv.pdf build/cv.pdf && echo '<a href="cv.pdf" target="_blank">Curriculum Vitae PDF</a>' > build/index.html
+
+      - name: Upload PDF
+        uses: actions/upload-artifact@v3
+        with:
+          name: PDF
+          path: build/cv.pdf
+
+      - name: Deploy build
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: build
+          folder: build

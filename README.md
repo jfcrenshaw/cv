@@ -1,4 +1,7 @@
 # cv
-Repo for my cv
 
-Inspired by CVs of [Malena Rice](http://www.astro.yale.edu/malenarice/) and [Jim Davenport](https://jradavenport.github.io).
+Repo for my cv.
+
+Synced with overleaf.
+
+PDF built with github action, and served on github pages at <https://jfcrenshaw.github.io/cv/cv.pdf>

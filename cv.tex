@@ -1,300 +1,84 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Medium Length Graduate Curriculum Vitae
-% LaTeX Template
-% Version 1.2 (3/28/15)
-%
-% This template has been downloaded from:
-% http://www.LaTeXTemplates.com
-%
-% Original author:
-% Rensselaer Polytechnic Institute 
-% (http://www.rpi.edu/dept/arc/training/latex/resumes/)
-%
-% Modified by:
-% Daniel L Marks <xleafr@gmail.com> 3/28/2015
-%
-% Important note:
-% This template requires the res.cls file to be in the same directory as the
-% .tex file. The res.cls file provides the resume style used for structuring the
-% document.
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[10pt]{cv}
 
-%-------------------------------------------------------------------------------
-%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
-%-------------------------------------------------------------------------------
+% set the headers
+\lhead{J. F. Crenshaw}
+\chead{}
+\rhead{\thepage}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% You can have multiple style options the legal options ones are:
-%
-%   centered:	the name and address are centered at the top of the page 
-%				(default)
-%
-%   line:		the name is the left with a horizontal line then the address to
-%				the right
-%
-%   overlapped:	the section titles overlap the body text (default)
-%
-%   margin:		the section titles are to the left of the body text
-%		
-%   11pt:		use 11 point fonts instead of 10 point fonts
-%
-%   12pt:		use 12 point fonts instead of 10 point fonts
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\let\latexnofiles\nofiles
-\let\nofiles\relax
-\documentclass[margin, 11pt]{res}  
+% and the footers
+\lfoot{}
+\cfoot{}
+\rfoot{}
 
-% Default font is the helvetica postscript font
-\usepackage{helvet}
-\usepackage{etaremune}
-\usepackage{enumitem, kantlipsum}
-\usepackage[dvipsnames]{xcolor}
-\usepackage[hidelinks, colorlinks=true, allcolors=NavyBlue]{hyperref}
+\begin{document} 
 
-\newcommand{\comment}[1]{}
-\newcommand{\paper}[2]{\href{#1}{\sc #2}}
+% title content
+\thispagestyle{firstpage}
+\pagetitle{John Franklin Crenshaw}
+\infobox{
+    Email: jfc20@uw.edu \\
+    Web: \href{https://jfcrenshaw.github.io}{https://jfcrenshaw.github.io} \\
+    ORCID: \href{https://orcid.org/0000-0002-2495-3514}{0000-0002-2495-3514} 
+}{
+    Department of Physics \\
+    University of Washington, Seattle \\
+    Seattle, WA
+}
 
-% Increase text height
-%\textheight=700pt
+% rest of CV
+\input{sections/education.tex}
+\input{sections/research.tex}
+\input{sections/awards.tex}
+\input{sections/talks_invited.tex}
+\input{sections/talks_contributed.tex}
+\input{sections/posters.tex}
+\input{sections/software.tex}
+\input{sections/students.tex}
+\input{sections/teaching.tex}
+\input{sections/outreach.tex}
+\input{sections/service.tex}
 
-\begin{document}
-
-\name{\Large John Franklin Crenshaw}
-%-------------------------------------------------------------------------------
-
-\begin{resume}
-
-%-------------------------------------------------------------------------------
-%	CONTACT INFO
-%-------------------------------------------------------------------------------
-\section{Contact Information}
-{Email: jfc20@uw.edu            \hfill University of Washington Physics Dept \\
-Web: \href{https://jfcrenshaw.github.io}{jfcrenshaw.github.io}       \hfill Box 351560 \\
-ORCID: \href{https://orcid.org/0000-0002-2495-3514} {0000-0002-2495-3514}     \hfill Seattle, WA 98195}
-
-%-------------------------------------------------------------------------------
-%	EDUCATION SECTION
-%-------------------------------------------------------------------------------
-\section{Education}
-
-\textbf{University of Washington}, Seattle, WA USA\\
-Ph.D. in Physics, expected May 2025\\
-M.S., Physics, December 2020\\
-Advisor: Andrew Connolly
-
-\textbf{Duke University}, Durham, NC USA \\
-B.S. in Physics, May 2019\\
-\textit{summa cum laude} with Highest Distinction \\
-Advisor: Kate Scholberg
-
-%-------------------------------------------------------------------------------
-%	RESEARCH EXPERIENCE
-%-------------------------------------------------------------------------------
-\section{Research Experience}
-
-\textbf{Dark Energy Science Collaboration (DESC)} \hfill 2019 - present \\
-Developing the photometric redshift pipeline for DESC cosmology \\
-Deconvolving galaxy spectra from photometry and studying galaxy evolution \\
-Photometric measurements of the intergalactic and circumgalactic media \\
-Advisor: Andrew Connolly
-
-\textbf{The Vera C. Rubin Observatory} \hfill 2021 - present \\
-Commissioning the active optics system \\
-Developing deep learning methods to improve telescope wavefront estimation \\
-Leading photometric redshift commissioning efforts \\
-Advisors: Andrew Connolly and Sandrine Thomas
-
-\textbf{Duke University Neutrino and Cosmology Group} \hfill 2016 - 2019 \\
-Simulating core-collapse supernova neutrino bursts \\
-Characterizing the sensitivity of the Helium and Lead Observatory (HALO) \\
-Advisor: Kate Scholberg
-
-\textbf{Karlsruhe Institute of Technology} \hfill 2018 \\
-Studying muon content of cosmic rays detected with the IceTop Array \\
-Developing machine learning methods for data analysis \\
-Advisor: Andreas Haungs
-
-%-------------------------------------------------------------------------------
-%	FELLOWSHIPS & AWARDS
-%-------------------------------------------------------------------------------
-\section{Fellowships \& Awards}
-Rubin Observatory ISSC Ambassador \hfill 2021 - 2022 \\
-DOE Scholar \hfill 2021 \\
-NSF Graduate Research Fellowship Honorable Mention \hfill 2021 \\
-Duke Faculty Scholar \hfill 2018 - 2019 \\
-Daphne Chang Memorial Award, Duke Physics Department \hfill 2019 \\
-Highest Distinction for Undergraduate Thesis Research \hfill 2019 \\
-DAAD RISE Research Exchange Scholarship \hfill 2018 \\
-
-%-------------------------------------------------------------------------------
-%	FIRST AUTHOR PUBLICATIONS
-%-------------------------------------------------------------------------------
+% publications
 \newpage
-\section{First Author Publications}
+\vspace*{-0.5cm}
+\pagetitle{Publication List}
+\input{sections/pubs_first_author.tex}
+\input{sections/pubs_co_author.tex}
 
-\begin{etaremune}[leftmargin=0pt]
-
-\item \paper{https://ui.adsabs.harvard.edu/abs/2020AJ....160..191C/abstract}{Learning Spectral Templates for Photometric Redshift Estimation from Broadband Photometry} \\
-\textbf{Crenshaw, J.F.} \& Connolly, A.J. 2020 \textit{AJ}, 160, 191.
-
-\end{etaremune}
-
-%-------------------------------------------------------------------------------
-%	OTHER PUBLICATIONS
-%-------------------------------------------------------------------------------
-\section{Co-Author Publications}
-
-\begin{etaremune}[leftmargin=0pt]
-
-\item \paper{https://ui.adsabs.harvard.edu/abs/2022arXiv220602815L/abstract}{The Simulated Catalogue of Optical Transients and Correlated Hosts (SCOTCH)} \\
-Lokken, M., Gagliano, A., Narayan, G., Hložek, R., Kessler, R., \textbf{Crenshaw, J. F.}, Salo, L., Alves, C. S., Chatterjee, D., Vincenzi, M., Malz, A. \textit{MNRAS, submitted} (2022)
-
-\item \paper{https://ui.adsabs.harvard.edu/abs/2022arXiv220212775S/abstract}{The Sensitivity of GPz Estimates of Photo-z Posterior PDFs to Realistically Complex Training Set Imperfections} \\
-Stylianou, N., Malz, A., Hatfield, P., \textbf{Crenshaw, J.F.}, Gschwend, J. \textit{PASP} (2022)
-
-\item \paper{https://arxiv.org/abs/2104.08229}{An information-based metric for observing strategy optimization, demonstrated in the context of photometric redshifts with applications to cosmology} \\
-Malz, A.I., Lanusse, F., \textbf{Crenshaw, J.F.}, Graham, M.L. \textit{arXiv} (2021)
-
-\end{etaremune}
-
-%-------------------------------------------------------------------------------
-%	INVITED TALKS
-%-------------------------------------------------------------------------------
-\section{Invited Talks}
-
-\hangindent=2mm
-DESC Summer Meeting (\textit{Chicago}) \hfill Aug 2022 \\
-\href{https://docs.google.com/presentation/d/1XIaaf1TzgIAM4Hg7VIUtnKwvI75EPUbHzXDIjFfOA2o/edit?usp=sharing}{Seeing the Forest for the Trees: Detecting a Photometric Lyman-$\alpha$ Signal \\with the Vera Rubin Observatory}
-
-\vspace{-3.5mm} \hangindent=2mm
-AAS Astronomers Turned Data Scientists (ATDS) Meeting (\textit{online}) \hfill Mar 2022 \\
-\href{https://docs.google.com/presentation/d/18cWynQW9p8bEPS6NMueZ4mKaEEmNdxUPhsXArGV5Cb8/edit?usp=sharing}{Simulating Astronomical Data with True Posteriors using Normalizing Flows}
-
-\vspace{-3.5mm} \hangindent=2mm
-Plenary Talk, DESC Winter Meeting (\textit{online}) \hfill Feb 2022 \\ \href{https://docs.google.com/presentation/d/179O1gnQpVfbIwZLfi7TlW8gYhP3K4MFBbi_8lAighNs/edit?usp=sharing}{Deep Generative Modeling for the Photo-z RAIL Pipeline}
-
-\vspace{-3.5mm} \hangindent=2mm
-Gruen Weak Lensing Group, KIPAC, SLAC National Lab (\textit{online}) \hfill Sep 2020 \\ \textit{Deconvolving Galaxy Spectra from Broadband Photometry} \\
-
-%-------------------------------------------------------------------------------
-%	CONTRIBUTED TALKS
-%-------------------------------------------------------------------------------
-\section{Contributed \\Talks}
-
-DESC Winter Meeting (\textit{online}) \hfill Feb 2021 \\
-Rubin Observatory Project \& Community Workshop (\textit{online}) \hfill Jul 2020 \\
-DESC Winter Meeting (\textit{Tucson, AZ}) \hfill Jan 2020 \\
-
-%-------------------------------------------------------------------------------
-%	POSTERS
-%-------------------------------------------------------------------------------
-\section{Research \\Posters}
-
-AAS 238th Meeting (\textit{online}) \hfill Jun 2021 \\
-SCMA VII Meeting (\textit{online}) \hfill Jun 2021 \\
-Duke Physics Research Symposium (\textit{Durham, NC}) \hfill Apr 2019 \\
-5th Joint Meeting of APS and Phys. Soc. of Japan (\textit{Waikoloa, HI}) \hfill Oct 2018 \\
-Neutrino 2018 (\textit{Heidelberg, Germany}) \hfill Jun 2018 \\
-
-%-------------------------------------------------------------------------------
-%	SOFTWARE
-%-------------------------------------------------------------------------------
-\section{Software Packages}
-
-\hangindent=2mm
-\textbf{PZFlow}: Probabilistic modeling of tabular data with normalizing flows \\
-Lead developer.
-Python package for efficient, high-dimensional joint density estimation and generative modeling of any tabular data.
-[\href{https://github.com/jfcrenshaw/pzflow}{Github}]
-[\href{https://pypi.org/project/pzflow/}{PyPI}]
-
-\hangindent=2mm
-\textbf{PhotErr}: Photometric error model for astronomical imaging surveys \\
-Lead developer.
-Python package for estimating photometric errors for both point and extended sources observed with astronomical imaging surveys, including the Rubin, Euclid, and Roman observatories.
-[\href{https://github.com/jfcrenshaw/photerr}{Github}]
-[\href{https://pypi.org/project/photerr/}{PyPI}]
-
-\hangindent=2mm
-\textbf{RAIL}: Redshift Assessment Infrastructure Layers \\
-Contributing developer.
-Python package for photo-z estimation and evaluation on large scale data.
-I lead development of the galaxy forward modeling framework, including systematic errors, which enables pipeline validation and numerous scientific studies.
-[\href{https://github.com/LSSTDESC/RAIL}{Github}]
-[\href{https://pypi.org/project/pz-rail/}{PyPI}]
-
-\hangindent=2mm
-\textbf{ts-wep}: wavefront estimation for the Rubin Observatory Active Optics System \\
-Contributing developer.
-Software that drives the Rubin Observatory Active Optics System.
-I contribute to the wavefront estimation algorithms, and am implementing deep learning methods for wavefront estimation.
-[\href{https://github.com/lsst-ts/ts_wep}{Github}]
+% conferences and workshops
+\newpage
+\vspace*{-0.5cm}
+\pagetitle{Conferences \& Workshops}
+\input{sections/conferences.tex}
 
 
-%-------------------------------------------------------------------------------
-%	TEACHING
-%-------------------------------------------------------------------------------
-\section{Teaching Experience}
+\end{document}
 
-\textbf{Reading Course Instructor, University of Washington} \hfill 2021 - present \\
-Independently designed syllabi and taught advanced reading courses to undergraduates, including \textit{Tensions in $\Lambda$CDM Cosmology} (2021-2022) and \textit{Gravitational Lensing: From Exoplanets to Large Scale Structure} (2022 -- present).
 
-\textbf{Teaching Assistant, Duke University} \hfill 2016 - 2019 \\
-Led lab and discussion sections and gave lectures covering introductory mechanics, fluid dynamics, electromagnetism, and optics.
 
-\textbf{Undergraduate Tutor, Duke University} \hfill 2016 - 2019 \\
-Worked as a tutor for introductory physics, modern physics, calculus I-III, and linear algebra.
 
-%-------------------------------------------------------------------------------
-%	OUTREACH
-%-------------------------------------------------------------------------------
-\section{Outreach}
 
-Graduate Student Research Panel, UC Berkeley \hfill Jul 2021 \\
-STEM Pals organizer \& pedagogical simulation lead  \hfill 2021 \\
-Duke University Teaching Observatory, volunteer \hfill 2018 - 2019 \\
-``Queer in Research'' Discussion Panel \hfill Oct 2018 \\
-Duke University Public Lecture: \textit{Where Did We Come From} \\
-\hspace*{4mm} \textit{and Are We Alone: Cosmic Origins and the Search for Life} \hfill Jan 2018
 
-%-------------------------------------------------------------------------------
-%	SERVICE & LEADERSHIP
-%-------------------------------------------------------------------------------
-\section{Service \& Leadership}
 
-Physics Undergraduate Reading Course \\
-\hspace*{4mm} Leadership Committee, University of Washington \hfill 2022 -- present \\
-Photo-z Commissioning Organizer, 2022 Rubin Observatory \\ 
-\hspace*{4mm} Project and Community Workshop (\textit{Tucson, AZ}) \hfill Aug 2022 \\
-Snowmass 2021 Summer Study, Organizing Volunteer \hfill Jul 2022 \\
-Physicists for Inclusion and Equity (PIE) Officer, UW \hfill 2020 -- 2021 \\
-Departmental Review Student Committee, Duke Physics Department \hfill 2018 \\
 
-%-------------------------------------------------------------------------------
-%	OBSERVING
-%-------------------------------------------------------------------------------
-%\section{\normalfont OBSERVING EXPERIENCE}
 
-%Apache Point Observatory - 3.5 m, DIS: 3 nights \\
 
-\newpage 
-%-------------------------------------------------------------------------------
-%	PROFESSIONAL SOCIETIES
-%-------------------------------------------------------------------------------
-\section{Professional Societies}
 
-American Astronomical Society (AAS) \\
-American Physical Society (APS) \\
-Phi Beta Kappa \\
-Duke Society of Physics Students (SPS) \\
 
-%-------------------------------------------------------------------------------
 
-\vfill
-\strut \hfill
-Last updated: \today
 
-\end{resume}
-\(\)\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
