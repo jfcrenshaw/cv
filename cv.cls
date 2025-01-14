@@ -33,6 +33,8 @@
 \usepackage{etaremune}
 \usepackage{microtype}
 \usepackage{parskip}
+\usepackage{eurosym}
+\usepackage{xifthen}
 
 % this command just comments out (or hides) anything inside
 \newcommand{\hide}[1]{}
@@ -167,7 +169,8 @@
         \begin{minipage}[l]{0.95\textwidth}
             \vspace{1.5mm}
             \raggedright #2
-            \hspace{-3.5mm} \ads{#3}
+            \hspace{-3.5mm} 
+            \ifthenelse{\isempty{#3}}{}{\ads{#3}}
         \end{minipage}
     \end{minipage}
 }
