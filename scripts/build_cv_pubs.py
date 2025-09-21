@@ -1,7 +1,7 @@
 """Script to generate CV publication list from ADS library."""
 
-from ads.libraries import Library
-from ads.search import Article
+from ads.libraries import Library  # type: ignore
+from ads.search import Article  # type: ignore
 from datetime import datetime
 
 
@@ -71,6 +71,10 @@ class CVPubBuilder:
 
             # Standardize names
             paper.author = [self._standardize_name(author) for author in paper.author]
+
+            # If author list is already short, skip
+            if len(paper.author) <= self.n_authors:
+                continue
 
             # Keep first handful of authors
             if len(paper.author) > self.n_authors:
