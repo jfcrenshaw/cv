@@ -31,7 +31,11 @@ class CVPubBuilder:
         """Flag if the paper is a collaboration paper."""
         if isinstance(authors, str):
             authors = [authors]
-        return authors[0].startswith("The")
+        return (
+            authors[0].startswith("The")
+            or "Observatory" in authors[0]
+            or "Collaboration" in authors[0]
+        )
 
     def _standardize_name(self, name: str) -> str:
         """Standardize a name to 'Last, F. M.' format."""
@@ -355,6 +359,7 @@ def main():
             [
                 "10.71929/RUBIN/2571480",  # DP1 photo-z technote
                 "10.48550/arXiv.2505.02928",  # RAIL paper
+                "10.71929/RUBIN/2570536",  # DP1 paper
             ]
         ),
         "tertiary": set(),
