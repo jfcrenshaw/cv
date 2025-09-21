@@ -17,6 +17,28 @@ class CVPubBuilder:
         n_authors: int = 4,
         tex_file: str = "sections/publications.tex",
     ) -> None:
+        """Initialize the CVPubBuilder.
+
+        Parameters:
+        -----------
+        lib_code : str
+            The ADS library code to retrieve papers from.
+        name : str
+            The standardized name to bold in author lists.
+        name_variations : list of str, optional
+            List of name variations to standardize to `name`.
+            Default is None.
+        doi_overrides : dict of str to set of str, optional
+            Dictionary with keys 'primary', 'secondary', 'tertiary' mapping to
+            sets of DOIs to override automatic sorting into publication
+            categories. Default is None.
+        n_authors : int, optional
+            Number of authors to show before truncating with "et al."
+            Default is 4.
+        tex_file : str, optional
+            Path to the output LaTeX file.
+            Default is 'sections/publications.tex'.
+        """
         # Save params
         self.lib_code = lib_code
         self.name = name
@@ -171,13 +193,16 @@ class CVPubBuilder:
         """
         Convert a journal name to its AAS standard abbreviation.
 
-        Args:
-            journal_name (str): The full journal name to convert
+        Parameters:
+        -----------
+        journal_name : str
+            The full journal name to convert.
 
         Returns:
-            str: The AAS abbreviation if found, otherwise the original name
+        --------
+        str
+            The AAS abbreviation if found, otherwise the original name
         """
-
         # Dictionary of journal names to AAS abbreviations
         # Based on AAS journal abbreviation standards
         journal_abbreviations = {
@@ -281,7 +306,10 @@ class CVPubBuilder:
         return info
 
     def print_latex(self) -> None:
-        """Print the publication lists in LaTeX format."""
+        """Print the publication lists in LaTeX format.
+
+        Note the output is saved in self.tex_file.
+        """
         # Sort papers
         primary, secondary, tertiary = self.sort_papers()
 
@@ -324,10 +352,12 @@ class CVPubBuilder:
 
 
 def main():
-
+    # Library code for my personal ADS library
     LIB_CODE = "p11_8_nYTjuAD1LbKfZC5g"
 
+    # Name I want printed in CV entries
     name = "Crenshaw J. F."
+    # Variations of my name to standardize to the above
     name_variations = [
         "Crenshaw, John Franklin",
         "Crenshaw, John F.",
@@ -349,6 +379,7 @@ def main():
         "J Crenshaw",
     ]
 
+    # DOIs to override automatic sorting into primary, secondary, tertiary
     doi_overrides = {
         "primary": set(),
         "secondary": set(
@@ -360,6 +391,7 @@ def main():
         "tertiary": set(),
     }
 
+    # Create the CVPubBuilder
     cvpb = CVPubBuilder(
         lib_code=LIB_CODE,
         name=name,
@@ -369,6 +401,7 @@ def main():
         tex_file="sections/publications.tex",
     )
 
+    # Print the LaTeX file
     cvpb.print_latex()
 
 
