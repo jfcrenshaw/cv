@@ -1,86 +1,62 @@
-\documentclass[10pt]{cv}
+\documentclass[11pt]{article}
 
-% set the headers
-\lhead{J. F. Crenshaw}
-\chead{}
-\rhead{\thepage}
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{etaremune}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[hidelinks, colorlinks=false]{hyperref}
+\usepackage{fontawesome}
 
-% and the footers
-\lfoot{}
-\cfoot{}
-\rfoot{}
+% Set font
+\usepackage[T1]{fontenc} % better output encoding (font glyphs)
+\usepackage[utf8]{inputenc} % UTF-8 input (é, ö, ñ, etc. directly in source)
+\usepackage[charter]{mathdesign} % choose font, with consistent math support
+\usepackage{microtype}
 
-\begin{document} 
+% Section formatting
+\titleformat{\section}{\bfseries\large}{}{0pt}{}[\titlerule]
+\titlespacing*{\section}{0pt}{1.5ex}{1.2ex}
+\setlength{\parindent}{0pt}
 
-% title content
-\thispagestyle{firstpage}
-\pagetitle{John Franklin Crenshaw}
-\infobox{
-    Email: jfc20@uw.edu \\
-    Web: \href{https://jfcrenshaw.github.io}{https://jfcrenshaw.github.io} \\
-    ORCID: \href{https://orcid.org/0000-0002-2495-3514}{0000-0002-2495-3514} 
-}{
-    Department of Physics \\
-    University of Washington, Seattle \\
-    Seattle, WA
+% Compact itemize
+\setlist[itemize]{
+    label={},
+    leftmargin=0pt,
+    itemindent=0pt,
+    parsep=0pt,
+    topsep=0.2em,
+    itemsep=0.1em
 }
 
-% rest of CV
-\input{sections/education.tex}
-\input{sections/research.tex}
-\input{sections/pubs_first_author_intro.tex}
-\input{sections/awards.tex}
-\input{sections/talks_invited.tex}
-\input{sections/software.tex}
-\input{sections/service.tex}
-\input{sections/students.tex}
-\input{sections/teaching.tex}
-\input{sections/outreach.tex}
-\input{sections/talks_contributed.tex}
-\input{sections/posters.tex}
+
+
+\begin{document}
+
+% Create header at top of page
+\begin{center}
+    {\huge John Franklin Crenshaw} \\[6pt]
+    jfcren@stanford.edu  $\,|\,$
+    \href{http://jfcrenshaw.github.io}{jfcrenshaw.github.io}
+\end{center}
+
+\input{sections/summary}
+\input{sections/appointments}
+\input{sections/education}
+\input{sections/grants}
+\input{sections/publications}
 %\input{sections/observing}
+\input{sections/students}
+\input{sections/software}
+\input{sections/presentations}
+\input{sections/teaching}
+\input{sections/outreach}
+\input{sections/service}
+% \input{sections/conferences}
 
-% publications
-\newpage
-\vspace*{-0.5cm}
-\pagetitle{Publication List}
-\input{sections/pubs_first_author.tex}
-\input{sections/pubs_co_author.tex}
-
-% conferences and workshops
-%\newpage
-%\vspace*{-0.5cm}
-%\pagetitle{Conferences \& Workshops}
-%\input{sections/conferences.tex}
+\vfill \hfill
+updated: \today
 
 
 \end{document}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
