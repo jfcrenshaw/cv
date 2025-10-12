@@ -147,7 +147,7 @@ class CVPubBuilder:
 
         for paper in self.papers:
             # First assign according to overrides
-            if self.doi_overrides is not None:
+            if paper.doi is not None and self.doi_overrides is not None:
                 if len(set(paper.doi) & self.doi_overrides["primary"]) > 0:
                     papers_primary.append(paper)
                     continue
