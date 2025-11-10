@@ -160,9 +160,10 @@ class CVPubBuilder:
 
             # If paper not in overrides, assign according to author list
             authors = paper.author
-            if self._flag_collab(authors[0]):
+            is_me = [self.name in name for name in authors]
+            if self._flag_collab(authors[0]) or is_me[-1]:
                 papers_tertiary.append(paper)
-            elif authors[0] == self.name or authors[1] == self.name:
+            elif is_me[0] or is_me[1]:
                 papers_primary.append(paper)
             else:
                 papers_secondary.append(paper)
@@ -244,10 +245,12 @@ class CVPubBuilder:
             # Preprint servers
             "arxiv e-prints": "arXiv",
             "arxiv": "arXiv",
+            # Other
+            "rubin observatory technical report": "Rubin Obs. Tech. Rep.",
         }
 
         # Standardize journal name (make lowercase; strip The, whitespace)
-        standardized_name = journal_name.lower().strip("the").strip()
+        standardized_name = journal_name.lower().removeprefix("the").strip()
 
         try:
             return journal_abbreviations[standardized_name]
@@ -274,15 +277,18 @@ class CVPubBuilder:
         pub = None if paper.pub is None else self.get_journal_abbrev(paper.pub)
         if pub is not None:
             info += " \n"
-            if pub != "arXiv":
+            if pub == "arXiv":
+                info += f"{paper.page[0]} "
+            else:
                 info += f"{pub} "
-            info += "" if paper.volume is None else f"{paper.volume} "
-            info += "" if paper.page is None else f"{paper.page[0]} "
+                info += "" if paper.volume is None else f"{paper.volume} "
+                info += (
+                    ""
+                    if (paper.volume is None or paper.page is None)
+                    else f"{paper.page[0]} "
+                )
         else:
             info += " "
-
-        # Append link to ADS
-        # info += f"\\ADS{{https://ui.adsabs.harvard.edu/abs/{paper.bibcode}}}"
 
         info += "\n\n"
 
@@ -364,6 +370,7 @@ def main():
                 "10.71929/RUBIN/2571480",  # DP1 photo-z technote
                 "10.48550/arXiv.2505.02928",  # RAIL paper
                 "10.71929/RUBIN/2570536",  # DP1 paper
+                "10.1093/mnras/stad302",  # SCOTCH paper (Lokken)
             ]
         ),
         "tertiary": set(),
