@@ -307,12 +307,12 @@ class CVPubBuilder:
         now = datetime.now()
         output += (
             f"As of {now.strftime('%B %Y')}, I have (co-)authored {self.n_papers} "
-            f"papers, with a total of {self.n_citations} citations "
-            f"and an h-index of {self.h_index}. \\vspace{{2mm}}\n\n"
+            f"publications with a total of {self.n_citations} citations "
+            f"(\\textit{{h}}-index {self.h_index}). \\vspace{{2mm}}\n\n"
         )
 
         if len(primary) > 0:
-            output += "\\textbf{First and Second Author:}\n"
+            output += "\\textbf{First Author:}\n"
             output += "\\begin{etaremune}\n"
             for paper in primary:
                 output += "\\item " + self._format_latex_entry(paper)
@@ -327,7 +327,14 @@ class CVPubBuilder:
             output += "\n\n"
 
         if len(tertiary):
-            output += "\\textbf{Other Co-Author Papers:}\n"
+            output += "\\textbf{Other Co-Author Papers:}\n\n"
+            output += (
+                "The following include white papers and papers for which I was "
+                "granted authorship due to more minor contributions, my role "
+                "collecting or calibrating data, or my builder status within "
+                "the Rubin Observatory and the Dark Energy Science Collaboration. "
+                "\\vspace{2mm}\n\n"
+            )
             output += "\\begin{etaremune}\n"
             for paper in tertiary:
                 output += "\\item " + self._format_latex_entry(paper)
@@ -372,6 +379,7 @@ def main():
                 "10.48550/arXiv.2505.02928",  # RAIL paper
                 "10.71929/RUBIN/2570536",  # DP1 paper
                 "10.1093/mnras/stad302",  # SCOTCH paper (Lokken)
+                "10.48550/arXiv.2601.10797",  # Crafford paper
             ]
         ),
         "tertiary": set(),
