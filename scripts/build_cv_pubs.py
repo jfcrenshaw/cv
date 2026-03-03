@@ -248,6 +248,7 @@ class CVPubBuilder:
             # Other
             "rubin observatory technical report": "Rubin Obs. Tech. Rep.",
             "nsf-doe vera c. rubin observatory technical report": "Rubin Obs. Tech. Rep.",
+            "open journal of astrophysics": "OJAp",
         }
 
         # Standardize journal name (make lowercase; strip The, whitespace)
