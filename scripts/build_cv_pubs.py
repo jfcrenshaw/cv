@@ -1,4 +1,16 @@
-"""Script to generate CV publication list from ADS library."""
+"""Script to generate CV publication list from ADS library.
+
+Quick start:
+1. Install the ads Python library and save your ADS API token, following the
+    instructions here: https://ads.readthedocs.io/en/latest/
+2. Get the ID code for your ADS library, which is in the url:
+    https://ui.adsabs.harvard.edu/user/libraries/<LIB_CODE>
+3. Update the configs in the main() function below, at the very least including
+    your library code and name. To understand other options, look at the
+    docstring for the CVPubBuilder class.
+
+Written by John Franklin Crenshaw
+"""
 
 from ads.libraries import Library  # type: ignore
 from ads.search import Article  # type: ignore
@@ -13,17 +25,118 @@ class CVPubBuilder:
         lib_code: str,
         name: str,
         name_variations: list[str] | None = None,
-        doi_overrides: dict[str, set[str]] | None = None,
+        primary_config: dict | None = None,
+        secondary_config: dict | None = None,
+        tertiary_config: dict | None = None,
+        hide: set[str] | None = None,
+        print_stats: bool = True,
         n_authors: int = 4,
+        tex_list_env: str = "etaremune",
         tex_file: str = "sections/publications.tex",
     ) -> None:
+        """Initialize the publication builder.
+
+        Parameters:
+        -----------
+        lib_code : str
+            The library code identifier for accessing the ADS library.
+        name : str
+            Your name as it will be printed in the CV.
+        name_variations : list of str, optional
+            A list of alternative name variations to recognize as you in
+            the author lists. These are all converted to the standard name
+            provided in the previous parameter. Defaults to None
+        doi_overrides : dict[str, set[str]], optional
+            A dictionary that allows you to override the automatic sorting
+            of papers into primary, secondary, and tertiary, which is based
+            on the author list. The dictionary should have three keys:
+            "primary", "secondary", and "tertiary", each mapping to a set of
+            DOI strings that should be categorized accordingly.
+            Defaults to None
+        primary_config : dict, optional
+            A dictionary with keys "title", "intro", and "overrides" for the
+            primary paper section. "title" is the section title, "intro" is
+            an optional introductory paragraph for that section, and
+            "overrides" is an optional set of DOI strings for papers that
+            should be categorized as primary regardless of the author list.
+            If None, "title" defaults to "First Author:",
+            while "intro" and "overrides" default to None.
+        secondary_config : dict, optional
+            A dictionary with keys "title", "intro", and "overrides" for the
+            secondary paper section. "title" is the section title, "intro" is
+            an optional introductory paragraph for that section, and
+            "overrides" is an optional set of DOI strings for papers that
+            should be categorized as secondary regardless of the author list.
+            If None, "title" defaults to "Co-Author with Major Contributions:",
+            while "intro" and "overrides" default to None.
+        tertiary_config : dict, optional
+            A dictionary with keys "title", "intro", and "overrides" for the
+            tertiary paper section. "title" is the section title, "intro" is
+            an optional introductory paragraph for that section, and
+            "overrides" is an optional set of DOI strings for papers that
+            should be categorized as tertiary regardless of the author list.
+            If None, "title" defaults to "Other Co-Author Papers:",
+            while "intro" and "overrides" default to None.
+        hide : set[str] or None, optional
+            A set of DOI strings for papers that should be hidden entirely
+            from the publication list, regardless of author list. Citations
+            for these papers do still contribute to the overall totals.
+            This is useful, for example, if there are two ADS entries that
+            really correspond to the same paper, and you want to hide one of
+            them to avoid duplicates. Defaults to None.
+        print_stats : bool, optional
+            Whether to print statistics about the generated publication list.
+            Defaults to True.
+        n_authors : int, optional
+            The maximum number of authors to display in the publication
+            listings before truncating with "et al.". Note this also
+            determines the auto-sorting of papers, as papers for which you
+            are in the "et al." portion of the author list are automatically
+            categorized as tertiary. The default is 4.
+        tex_list_env : str, optional
+            The LaTeX environment to use for the publication list.
+            The default is "etaremune", but other common environments are
+            "itemize" and "enumerate". Note that using "etaremune" requires
+            adding "\\usepackage{etaremune}" to your LaTeX preamble.
+        tex_file : str, optional
+            The path to the output LaTeX file where the compiled publication
+            list will be saved, by default "sections/publications.tex".
+        """
         # Save params
         self.lib_code = lib_code
+        self.library = Library(lib_code)
+
         self.name = name
         self.name_variations = name_variations
-        self.library = Library(lib_code)
-        self.doi_overrides = doi_overrides
+
+        # Merge config updates with defaults
+        self.primary_config = {
+            "title": "Primary Author:",
+            "intro": None,
+            "overrides": None,
+        }
+        self.primary_config |= {} if primary_config is None else primary_config
+
+        self.secondary_config = {
+            "title": "Co-Author with Major Contributions:",
+            "intro": None,
+            "overrides": None,
+        }
+        self.secondary_config |= {} if secondary_config is None else secondary_config
+
+        self.tertiary_config = {
+            "title": "Other Co-Author Papers:",
+            "intro": None,
+            "overrides": None,
+        }
+        self.tertiary_config |= {} if tertiary_config is None else tertiary_config
+
+        self.hide = set() if hide is None else set(hide)
+
+        # Save other params
+        self.print_stats = print_stats
         self.n_authors = n_authors
+        self.tex_list_env = tex_list_env
         self.tex_file = tex_file
 
     @staticmethod
@@ -112,7 +225,7 @@ class CVPubBuilder:
     def n_papers(self) -> int:
         """Total number of papers."""
         self.retrieve_papers()
-        return len(self.papers)
+        return len(self.papers) - len(self.hide)
 
     @property
     def n_citations(self) -> int:
@@ -145,17 +258,24 @@ class CVPubBuilder:
         papers_secondary = []
         papers_tertiary = []
 
+        # Get the overrides, and use empty sets if None
+        primary_overrides = set(self.primary_config["overrides"] or [])
+        secondary_overrides = set(self.secondary_config["overrides"] or [])
+        tertiary_overrides = set(self.tertiary_config["overrides"] or [])
+
         for paper in self.papers:
             # First assign according to overrides
-            if paper.doi is not None and self.doi_overrides is not None:
-                if len(set(paper.doi) & self.doi_overrides["primary"]) > 0:
+            if paper.doi is not None:
+                if len(set(paper.doi) & primary_overrides) > 0:
                     papers_primary.append(paper)
                     continue
-                elif len(set(paper.doi) & self.doi_overrides["secondary"]) > 0:
+                elif len(set(paper.doi) & secondary_overrides) > 0:
                     papers_secondary.append(paper)
                     continue
-                elif len(set(paper.doi) & self.doi_overrides["tertiary"]) > 0:
+                elif len(set(paper.doi) & tertiary_overrides) > 0:
                     papers_tertiary.append(paper)
+                    continue
+                elif len(set(paper.doi) & self.hide) > 0:
                     continue
 
             # If paper not in overrides, assign according to author list
@@ -163,7 +283,7 @@ class CVPubBuilder:
             is_me = [self.name in name for name in authors]
             if self._flag_collab(authors[0]) or is_me[-1]:
                 papers_tertiary.append(paper)
-            elif is_me[0] or is_me[1]:
+            elif is_me[0]:
                 papers_primary.append(paper)
             else:
                 papers_secondary.append(paper)
@@ -296,8 +416,27 @@ class CVPubBuilder:
 
         return info
 
-    def print_latex(self) -> None:
-        """Print the publication lists in LaTeX format."""
+    def _format_section(self, papers: list[Article], config: dict) -> str:
+        """Format a section of the publication list."""
+        if len(papers) == 0:
+            return ""
+
+        title = config["title"]
+        intro = config["intro"] or ""
+        if len(intro) > 0:
+            intro = intro + "\n\n"
+
+        output = f"\\textbf{{{title}}}\n\n"
+        output += intro
+        output += f"\\begin{{{self.tex_list_env}}}\n"
+        for paper in papers:
+            output += "\\item " + self._format_latex_entry(paper)
+        output += f"\\end{{{self.tex_list_env}}}\n\n"
+
+        return output
+
+    def write_latex(self) -> None:
+        """Write the publication lists in LaTeX format."""
         # Sort papers
         primary, secondary, tertiary = self.sort_papers()
 
@@ -305,41 +444,18 @@ class CVPubBuilder:
         output = "\\section{Publications}\n\n"
 
         # Add summary stats
-        now = datetime.now()
-        output += (
-            f"As of {now.strftime('%B %Y')}, I have (co-)authored {self.n_papers} "
-            f"publications with a total of {self.n_citations} citations "
-            f"(\\textit{{h}}-index {self.h_index}). \\vspace{{2mm}}\n\n"
-        )
-
-        if len(primary) > 0:
-            output += "\\textbf{First Author:}\n"
-            output += "\\begin{etaremune}\n"
-            for paper in primary:
-                output += "\\item " + self._format_latex_entry(paper)
-            output += "\\end{etaremune}\n\n"
-
-        if len(secondary) > 0:
-            output += "\\textbf{Co-Author with Major Contributions:}\n"
-            output += "\\begin{etaremune}\n"
-            for paper in secondary:
-                output += "\\item " + self._format_latex_entry(paper)
-            output += "\\end{etaremune}\n\n"
-            output += "\n\n"
-
-        if len(tertiary):
-            output += "\\textbf{Other Co-Author Papers:}\n\n"
+        if self.print_stats:
+            now = datetime.now()
             output += (
-                "The following include white papers and papers for which I was "
-                "granted authorship due to more minor contributions, my role "
-                "collecting or calibrating data, or my builder status within "
-                "the Rubin Observatory and the Dark Energy Science Collaboration. "
-                "\\vspace{2mm}\n\n"
+                f"As of {now.strftime('%B %Y')}, "
+                f"I have (co-)authored {self.n_papers} publications "
+                f"with a total of {self.n_citations} citations "
+                f"(\\textit{{h}}-index {self.h_index}). \\vspace{{2mm}}\n\n"
             )
-            output += "\\begin{etaremune}\n"
-            for paper in tertiary:
-                output += "\\item " + self._format_latex_entry(paper)
-            output += "\\end{etaremune}\n\n"
+
+        output += self._format_section(primary, self.primary_config)
+        output += self._format_section(secondary, self.secondary_config)
+        output += self._format_section(tertiary, self.tertiary_config)
 
         # Write to file
         with open(self.tex_file, "w") as file:
@@ -372,30 +488,45 @@ def main():
         "J Crenshaw",
     ]
 
-    doi_overrides = {
-        "primary": set(),
-        "secondary": set(
-            [
-                "10.71929/RUBIN/2571480",  # DP1 photo-z technote
-                "10.48550/arXiv.2505.02928",  # RAIL paper
-                "10.71929/RUBIN/2570536",  # DP1 paper
-                "10.1093/mnras/stad302",  # SCOTCH paper (Lokken)
-                "10.48550/arXiv.2601.10797",  # Crafford paper
-            ]
-        ),
-        "tertiary": set(),
+    primary_config = {
+        "title": "First Author:",
+        "intro": None,
+        "overrides": None,
     }
+    secondary_config = {
+        "title": "Co-Author with Major Contributions:",
+        "intro": None,
+        "overrides": [
+            "10.71929/RUBIN/2571480",  # DP1 photo-z technote
+            "10.48550/arXiv.2505.02928",  # RAIL paper
+            "10.48550/arXiv.2603.23786",  # DP1 paper
+            "10.1093/mnras/stad302",  # SCOTCH paper (Lokken)
+            "10.48550/arXiv.2601.10797",  # Crafford paper
+        ],
+    }
+    tertiary_config = {
+        "title": "Other Co-Author Papers:",
+        "intro": (
+            "The following include white papers and papers for which I was "
+            "granted authorship due to more minor contributions, my role "
+            "collecting or calibrating data, or my builder status within "
+            "the Rubin Observatory and the Dark Energy Science Collaboration."
+        ),
+        "overrides": None,
+    }
+    hide = ["10.71929/RUBIN/2570536"]
 
     cvpb = CVPubBuilder(
         lib_code=LIB_CODE,
         name=name,
         name_variations=name_variations,
-        doi_overrides=doi_overrides,
-        n_authors=4,
-        tex_file="sections/publications.tex",
+        primary_config=primary_config,
+        secondary_config=secondary_config,
+        tertiary_config=tertiary_config,
+        hide=hide,
     )
 
-    cvpb.print_latex()
+    cvpb.write_latex()
 
 
 if __name__ == "__main__":
