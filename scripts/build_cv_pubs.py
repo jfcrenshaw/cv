@@ -222,6 +222,11 @@ class CVPubBuilder:
             self._mangle_authors()
 
     @property
+    def _papers_with_cites(self) -> list:
+        """List of papers with valid citations."""
+        return [paper for paper in self.papers if paper.citation_count is not None]
+
+    @property
     def n_papers(self) -> int:
         """Total number of papers."""
         self.retrieve_papers()
@@ -231,7 +236,7 @@ class CVPubBuilder:
     def n_citations(self) -> int:
         """Total number of citations."""
         self.retrieve_papers()
-        return sum(paper.citation_count for paper in self.papers)
+        return sum(paper.citation_count for paper in self._papers_with_cites)
 
     @property
     def h_index(self) -> int:
@@ -239,7 +244,7 @@ class CVPubBuilder:
         self.retrieve_papers()
 
         # Get sorted list of citation counts (highest to lowest)
-        cites = sorted([paper.citation_count for paper in self.papers], reverse=True)
+        cites = sorted([paper.citation_count for paper in self._papers_with_cites], reverse=True)
 
         # Step through to calculate h-index
         h_index = 0
