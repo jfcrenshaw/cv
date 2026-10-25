@@ -8,6 +8,7 @@
   Publication statistics come from `sections/pubstats.tex`, which `build_cv_pubs.py` writes.
   The funding and invited-talk totals are counted from the `\grant` and `\talk` entries and saved to the `.aux` file, so they need a second compile (shown as ?? until then).
   Write new grants as `\grant{amount}{name}{dates}` (counted) or `\grant*{...}` (listed, not counted), and new invited talks as `\talk` instead of `\item`.
-- `cv.tex` puts the publication list on its own page (page numbering restarts) so it can be uploaded separately.
+- The general CV (`main`) is 11 pt with the publication list after Fellowships/Honors.
+  Application-specific versions live on their own branches: `hubble-2026` (12 pt, NHFP font rule; publication list on its own page with restarted numbering so it can be uploaded separately; teaching and outreach ahead of observing and software).
 - LaTeX and Markdown: one sentence per line.
 - Do not commit or push; JF reviews and commits. The repo syncs with Overleaf.

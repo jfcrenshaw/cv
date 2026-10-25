@@ -1,4 +1,4 @@
-\documentclass[12pt]{article}
+\documentclass[11pt]{article}
 
 % Packages
 \usepackage[margin=1in]{geometry}
@@ -85,26 +85,22 @@
 \input{sections/appointments}
 %\input{sections/collaborations}
 \input{sections/education}
-\input{sections/grants}\newpage
+\input{sections/grants}
+\input{sections/highlights}
+\newpage
+{\sloppy % let long auto-generated author lists break instead of overrunning the margin
+\input{sections/publications}}
 \input{sections/presentations}
-\input{sections/service}
 \input{sections/students}
 \input{sections/teaching}
 \input{sections/outreach}
+\input{sections/service}
 \input{sections/observing}
 \input{sections/software}
 % \input{sections/conferences}
 
 \vfill
 \vspace{0.5em} \hfill {\small\color{black!65}updated \today}
-
-
-% Publication list starts on its own page, so it can be submitted separately
-\clearpage
-\setcounter{page}{1}
-\nameheader
-\sloppy % let long auto-generated author lists break instead of overrunning the margin
-\input{sections/publications}
 
 
 \end{document}
