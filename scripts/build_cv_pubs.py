@@ -5,9 +5,11 @@ Quick start:
     instructions here: https://ads.readthedocs.io/en/latest/
 2. Get the ID code for your ADS library, which is in the url:
     https://ui.adsabs.harvard.edu/user/libraries/<LIB_CODE>
-3. Update the configs in the main() function below, at the very least including
+3. Put your settings in scripts/pubs_config.yaml, at the very least including
     your library code and name. To understand other options, look at the
     docstring for the CVPubBuilder class.
+4. Run from the repository root:
+    python scripts/build_cv_pubs.py [path/to/config.yaml]
 
 Written by John Franklin Crenshaw
 """
@@ -15,7 +17,10 @@ Written by John Franklin Crenshaw
 from ads.libraries import Library  # type: ignore
 from ads.search import Article  # type: ignore
 from datetime import datetime
+from pathlib import Path
+import argparse
 import re
+import yaml
 
 
 class CVPubBuilder:
@@ -328,9 +333,9 @@ class CVPubBuilder:
                 papers_secondary.append(paper)
 
         # Make sure they are sorted by publication date
-        papers_primary.sort(key=lambda paper: paper.pubdate, reverse=True)
-        papers_secondary.sort(key=lambda paper: paper.pubdate, reverse=True)
-        papers_tertiary.sort(key=lambda paper: paper.pubdate, reverse=True)
+        papers_primary.sort(key=lambda paper: (paper.pubdate, paper.bibcode), reverse=True)
+        papers_secondary.sort(key=lambda paper: (paper.pubdate, paper.bibcode), reverse=True)
+        papers_tertiary.sort(key=lambda paper: (paper.pubdate, paper.bibcode), reverse=True)
 
         return papers_primary, papers_secondary, papers_tertiary
 
@@ -555,140 +560,33 @@ class CVPubBuilder:
 
 
 def main():
-
-    LIB_CODE = "p11_8_nYTjuAD1LbKfZC5g"
-
-    name = "Crenshaw J. F."
-    name_variations = [
-        "Crenshaw, John Franklin",
-        "Crenshaw, John F.",
-        "Crenshaw, J. F.",
-        "Crenshaw, JF",
-        "Crenshaw J. F.",
-        "Crenshaw JF",
-        "John Franklin Crenshaw",
-        "John F. Crenshaw",
-        "J. F. Crenshaw",
-        "JF Crenshaw",
-        "Crenshaw, John",
-        "Crenshaw, J.",
-        "Crenshaw, J",
-        "Crenshaw J.",
-        "Crenshaw J",
-        "John Crenshaw",
-        "J. Crenshaw",
-        "J Crenshaw",
-    ]
-
-    primary_config = {
-        "title": "First Author:",
-        "intro": None,
-        "overrides": None,
-    }
-    secondary_config = {
-        "title": "Co-Author with Major Contributions:",
-        "intro": None,
-        "overrides": [
-            "10.71929/RUBIN/2571480",  # DP1 photo-z technote
-            "10.48550/arXiv.2505.02928",  # RAIL paper
-            "10.48550/arXiv.2603.23786",  # DP1 paper
-            "10.1093/mnras/stad302",  # SCOTCH paper (Lokken)
-            "10.48550/arXiv.2601.10797",  # Crafford paper
-        ],
-    }
-    tertiary_config = {
-        "title": "Other Co-Author Papers:",
-        "intro": (
-            "Includes papers on which my authorship reflects smaller "
-            "contributions, data collection or calibration, or my Rubin and "
-            "DESC Builder status, as well as white papers."
-        ),
-        "overrides": None,
-    }
-    hide = [
-        "10.71929/RUBIN/2570536",
-        "10.48550/arXiv.2104.08229",  # arXiv version of the ApJS information-metric paper
-    ]
-
-    pzflow = "Created PZFlow, used in this work to "
-    rail = (
-        "Led development of RAIL's forward-modeling (creation) module: "
-        "normalizing flows, photometric error models, and spectroscopic "
-        "degradations."
+    parser = argparse.ArgumentParser(
+        description="Build the CV publication list from an ADS library."
     )
-    dp1 = (
-        "Ran and optimized the active optics system to focus and collimate "
-        "the telescope during the observations."
+    parser.add_argument(
+        "config",
+        nargs="?",
+        type=Path,
+        default=Path(__file__).with_name("pubs_config.yaml"),
+        help="YAML configuration file (default: scripts/pubs_config.yaml)",
     )
-    malz = (
-        pzflow + "estimate the information metric with conditional normalizing flows."
-    )
-    contributions = {
-        "10.1093/mnras/stag1012": (  # DP1 photo-z paper (Zhang)
-            "Built the reference sample and its Euclid cross-match."
-        ),
-        "10.48550/arXiv.2505.02928": rail,  # RAIL paper (arXiv)
-        "10.33232/001c.158200": rail,  # RAIL paper (OJAp)
-        "10.1093/mnras/stae2519": (  # Spatial variability paper (Hang)
-            "Developed PhotErr and the RAIL forward-modeling tools used to "
-            "propagate depth variations."
-        ),
-        "10.3847/1538-4365/ad7d07": malz,  # Information metric (ApJS)
-        "10.3847/1538-4357/ad6cdc": (  # AOS degeneracy paper (Megias Homar)
-            "Helped devise the SVD control strategy and its weighting by impact "
-            "on image quality."
-        ),
-        "10.48550/arXiv.2603.23786": dp1,  # DP1 paper (arXiv)
-        "10.3847/1538-3881/ae521f": dp1,  # DP1 paper (AJ)
-        "10.48550/arXiv.2601.10797": pzflow + "model photo-$z$ biases.",  # Crafford
-        "10.1088/1538-3873/ac59bf": pzflow + "model photo-$z$ biases.",  # Stylianou
-        "10.3847/2041-8213/ad4039": pzflow
-        + "generate the augmented training galaxies.",  # Moskowitz
-        "10.1093/mnras/stad302": pzflow
-        + "model correlated host-galaxy properties.",  # SCOTCH
-    }
+    args = parser.parse_args()
 
-    # Most significant papers, starred in the list
-    highlight = {
-        "2025ApJS..281...54C",  # u-band survey strategy and LBGs
-        "2026ApJ..1009L..13C",  # DP1 circumgalactic dust
-        "2024AJ....168...80C",  # PZFlow
-    }
+    with open(args.config) as file:
+        config = yaml.safe_load(file)
 
-    # Papers not yet in ADS, listed after the first-author papers
-    unpublished = [
-        {
-            "title": (
-                "Cosmology with LSST Lyman-break Galaxies: Forecasts from "
-                "Clustering and CMB-Lensing Cross-Correlations with Realistic "
-                "Systematics"
-            ),
-            "authors": "Crenshaw J. F., Šarčević N., Sherwin B., et al.",
-            "year": 2026,
-            "status": "in DESC collaboration review",
-        },
-        {
-            "title": (
-                "Disentangling Shape and Intensity Information in Defocused "
-                "Wavefront Estimation"
-            ),
-            "authors": "Crenshaw J. F., Megias Homar G., et al.",
-            "year": 2026,
-            "status": "in Rubin Observatory internal review",
-        },
-    ]
-
+    sections = config.get("sections", {})
     cvpb = CVPubBuilder(
-        lib_code=LIB_CODE,
-        name=name,
-        name_variations=name_variations,
-        primary_config=primary_config,
-        secondary_config=secondary_config,
-        tertiary_config=tertiary_config,
-        hide=hide,
-        contributions=contributions,
-        highlight=highlight,
-        unpublished=unpublished,
+        lib_code=config["library"],
+        name=config["name"],
+        name_variations=config.get("name_variations"),
+        primary_config=sections.get("primary"),
+        secondary_config=sections.get("secondary"),
+        tertiary_config=sections.get("tertiary"),
+        hide=config.get("hide"),
+        contributions=config.get("contributions"),
+        highlight=config.get("highlight"),
+        unpublished=config.get("unpublished"),
     )
 
     cvpb.write_latex()
