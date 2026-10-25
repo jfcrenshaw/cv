@@ -1,4 +1,4 @@
-\documentclass[11pt]{article}
+\documentclass[12pt]{article}
 
 % Packages
 \usepackage[margin=1in]{geometry}
@@ -27,7 +27,51 @@
     itemindent=0pt,
     parsep=0pt,
     topsep=0.2em,
-    itemsep=0.1em
+    itemsep=0.3em
+}
+
+% Description beneath a CV entry: indented and grey, so titles stay easy to scan.
+% It ends the title line (with no fill, so dates stay flush right) and sets the
+% description as its own indented paragraph, so wrapped lines keep the indent.
+\newcommand{\desc}[1]{{\parfillskip=0pt\par}{\leftskip=1em\small\color{black!65}#1\par}}
+
+% Totals for the "At a glance" line.
+% Talks and funding are counted as the lists are typeset and saved to the .aux file,
+% so page 1 shows them after a second compile (latexmk and Overleaf do this automatically).
+\usepackage{siunitx}
+\sisetup{group-separator={,}, group-minimum-digits=4}
+\input{sections/pubstats} % publication statistics, written by scripts/build_cv_pubs.py
+\newcounter{invitedtalks}
+\newcounter{funding}
+% \talk is an \item that counts toward the invited-talk total
+\newcommand{\talk}{\item\stepcounter{invitedtalks}}
+% \grant{amount}{name}{dates} lists a grant and adds it to the funding total;
+% \grant*{amount}{name}{dates} lists it without adding it
+\NewDocumentCommand{\grant}{s m m m}{%
+    \item\IfBooleanF{#1}{\addtocounter{funding}{#2}}%
+    #3 (\$\num{#2}) \hfill #4}
+\makeatletter
+\AtEndDocument{\immediate\write\@mainaux{%
+    \gdef\string\totaltalks{\arabic{invitedtalks}}%
+    \gdef\string\totalfunding{\arabic{funding}}}}
+\makeatother
+% Print a saved total, or ?? before the first full compile
+\newcommand{\savedtotal}[1]{\ifcsname #1\endcsname\num{\csname #1\endcsname}\else ??\fi}
+
+% \keypaper marks a significant paper with a star just left of its list number
+% (offset by the width of this item's own label, so it hugs the number)
+\makeatletter
+\newcommand{\keypaper}{\leavevmode\sbox0{\@currentlabel.}%
+    \llap{$\star$\hspace{\dimexpr\labelsep+\wd0+0.2em\relax}}}
+\makeatother
+
+% Name header, used for the CV and the separate publication list
+\newcommand{\nameheader}{
+    \begin{center}
+        {\huge John Franklin Crenshaw} \\[6pt]
+        jfcren@stanford.edu  $\,|\,$
+        \href{http://jfcrenshaw.github.io}{jfcrenshaw.github.io}
+    \end{center}
 }
 
 
@@ -35,28 +79,32 @@
 \begin{document}
 
 % Create header at top of page
-\begin{center}
-    {\huge John Franklin Crenshaw} \\[6pt]
-    jfcren@stanford.edu  $\,|\,$
-    \href{http://jfcrenshaw.github.io}{jfcrenshaw.github.io}
-\end{center}
+\nameheader
 
 \input{sections/summary}
 \input{sections/appointments}
+%\input{sections/collaborations}
 \input{sections/education}
-\input{sections/grants}
-\input{sections/publications}
-%\input{sections/observing}
-\input{sections/students}
-\input{sections/software}
+\input{sections/grants}\newpage
 \input{sections/presentations}
+\input{sections/service}
+\input{sections/students}
 \input{sections/teaching}
 \input{sections/outreach}
-\input{sections/service}
+\input{sections/observing}
+\input{sections/software}
 % \input{sections/conferences}
 
-\vfill \hfill
-updated: \today
+\vfill
+\vspace{0.5em} \hfill {\small\color{black!65}updated \today}
+
+
+% Publication list starts on its own page, so it can be submitted separately
+\clearpage
+\setcounter{page}{1}
+\nameheader
+\sloppy % let long auto-generated author lists break instead of overrunning the margin
+\input{sections/publications}
 
 
 \end{document}

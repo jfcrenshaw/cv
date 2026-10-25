@@ -1,0 +1,13 @@
+# Working notes for the CV repo
+
+- The `.tex` sources double as a git-tracked record of everything JF has done.
+  Never delete entries or their descriptions: comment them out (`%`) instead, so the history stays in the source.
+- `sections/publications.tex` is generated from ADS by `scripts/build_cv_pubs.py`; run it in the `cv` mamba environment (`mamba run -n cv python scripts/build_cv_pubs.py`), which has the `ads` package, with the token in `~/.ads/dev_key`.
+  Make publication changes in the script (overrides, `hide`, `contributions`, `highlight`) so a rerun reproduces them; hand edits to `publications.tex` are overwritten.
+- The "At a glance" line in `sections/summary.tex` updates itself.
+  Publication statistics come from `sections/pubstats.tex`, which `build_cv_pubs.py` writes.
+  The funding and invited-talk totals are counted from the `\grant` and `\talk` entries and saved to the `.aux` file, so they need a second compile (shown as ?? until then).
+  Write new grants as `\grant{amount}{name}{dates}` (counted) or `\grant*{...}` (listed, not counted), and new invited talks as `\talk` instead of `\item`.
+- `cv.tex` puts the publication list on its own page (page numbering restarts) so it can be uploaded separately.
+- LaTeX and Markdown: one sentence per line.
+- Do not commit or push; JF reviews and commits. The repo syncs with Overleaf.

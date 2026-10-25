@@ -1,21 +1,27 @@
 \section{Software}
 \begin{itemize}[leftmargin=2em, itemindent=-2em]
-    \item \texttt{PZFlow}: 
-        Creator and lead developer of a Python package for efficient, high-dimensional probabilistic modeling of tabular data using normalizing flows.
-        \href{https://github.com/jfcrenshaw/pzflow}{\faGithub}
+    \item \texttt{PZFlow}:
+        Creator and lead developer of a normalizing-flow package for forward-modeling galaxy catalogs; its paper, shared with PhotErr, has 38 citations in two years.
+        % Citation count from ADS for 2024AJ....168...80C; update before submitting.
+        \href{https://github.com/jfcrenshaw/pzflow}{\faGithub}~%
         \href{https://pypi.org/project/pzflow/}{\faCloudDownload}
-    
-    \item \texttt{PhotErr}: 
-        Creator and lead developer of a Python package for estimating photometric errors for astronomical imaging surveys, including the Rubin, Euclid, and Roman observatories.
-        \href{https://github.com/jfcrenshaw/photerr}{\faGithub}
+
+    \item \texttt{PhotErr}:
+        Creator and lead developer of a photometric-error model for Rubin, Euclid, and Roman; used in Roman simulations, LSST strategy studies, and DESC forecasts.
+        \href{https://github.com/jfcrenshaw/photerr}{\faGithub}~%
         \href{https://pypi.org/project/photerr/}{\faCloudDownload}
 
-    \item \texttt{ts-wep}: 
-        Contributing developer of a Python package for wave-front inference for the active optics system of the Rubin Observatory.
-        \href{https://github.com/lsst-ts/ts_wep}{\faGithub}
+    \item \texttt{lbg\_tools}:
+        Creator of a package modeling LBG populations and selection yields versus survey depth; underpins the $u$-band study, LBG forecasts, and photo-$z$ requirements.
+        \href{https://github.com/jfcrenshaw/lbg_tools}{\faGithub}~%
+        \href{https://pypi.org/project/lbg-tools/}{\faCloudDownload}
 
     \item \texttt{RAIL}:
-        Contributing developer of the RAIL photometric redshift (photo-z) estimation pipeline, including forward modeling galaxy catalogs and sources of systematic error.
-        \href{https://github.com/LSSTDESC/RAIL}{\faGithub}
+        Lead developer of forward modeling in DESC's photo-$z$ framework, which generates realistic catalogs and systematic errors for validating photo-$z$ methods.
+        \href{https://github.com/LSSTDESC/RAIL}{\faGithub}~%
         \href{https://pypi.org/project/pz-rail/}{\faCloudDownload}
+
+    \item \texttt{ts-wep}:
+        Core developer of the wavefront pipeline driving Rubin's active optics; redesigned its architecture to integrate deep-learning and forward-modeling estimators.
+        \href{https://github.com/lsst-ts/ts_wep}{\faGithub}
 \end{itemize}

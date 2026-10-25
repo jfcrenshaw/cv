@@ -15,6 +15,7 @@ Written by John Franklin Crenshaw
 from ads.libraries import Library  # type: ignore
 from ads.search import Article  # type: ignore
 from datetime import datetime
+import re
 
 
 class CVPubBuilder:
@@ -29,10 +30,15 @@ class CVPubBuilder:
         secondary_config: dict | None = None,
         tertiary_config: dict | None = None,
         hide: set[str] | None = None,
+        contributions: dict[str, str] | None = None,
+        highlight: set[str] | None = None,
+        unpublished: list[dict] | None = None,
+        unpublished_title: str = "In Collaboration Review:",
         print_stats: bool = True,
         n_authors: int = 4,
         tex_list_env: str = "etaremune",
         tex_file: str = "sections/publications.tex",
+        stats_file: str = "sections/pubstats.tex",
     ) -> None:
         """Initialize the publication builder.
 
@@ -84,6 +90,22 @@ class CVPubBuilder:
             This is useful, for example, if there are two ADS entries that
             really correspond to the same paper, and you want to hide one of
             them to avoid duplicates. Defaults to None.
+        contributions : dict[str, str] or None, optional
+            A dictionary mapping DOI strings to a short description of your
+            contribution to that paper, printed beneath the entry.
+            Defaults to None.
+        highlight : set[str] or None, optional
+            A set of ADS bibcodes for your most significant papers, which are
+            marked with a star. Defaults to None.
+        unpublished : list[dict] or None, optional
+            Papers that are not yet in ADS (e.g., in collaboration review).
+            Each dictionary has keys "title", "authors", "year", and
+            "status". They are listed in their own section after the
+            primary papers and do not count toward the summary statistics.
+            Defaults to None.
+        unpublished_title : str, optional
+            Title of the section listing unpublished papers.
+            The default is "In Collaboration Review:".
         print_stats : bool, optional
             Whether to print statistics about the generated publication list.
             Defaults to True.
@@ -101,6 +123,11 @@ class CVPubBuilder:
         tex_file : str, optional
             The path to the output LaTeX file where the compiled publication
             list will be saved, by default "sections/publications.tex".
+        stats_file : str, optional
+            The path to the output LaTeX file defining macros with the
+            publication statistics (\\cvnpubs, \\cvnfirst, \\cvnreview,
+            \\cvncites, \\cvhindex), used in the CV summary.
+            The default is "sections/pubstats.tex".
         """
         # Save params
         self.lib_code = lib_code
@@ -132,12 +159,17 @@ class CVPubBuilder:
         self.tertiary_config |= {} if tertiary_config is None else tertiary_config
 
         self.hide = set() if hide is None else set(hide)
+        self.contributions = {} if contributions is None else dict(contributions)
+        self.highlight = set() if highlight is None else set(highlight)
+        self.unpublished = [] if unpublished is None else list(unpublished)
+        self.unpublished_title = unpublished_title
 
         # Save other params
         self.print_stats = print_stats
         self.n_authors = n_authors
         self.tex_list_env = tex_list_env
         self.tex_file = tex_file
+        self.stats_file = stats_file
 
     @staticmethod
     def _flag_collab(authors: list[str] | str) -> bool:
@@ -244,7 +276,9 @@ class CVPubBuilder:
         self.retrieve_papers()
 
         # Get sorted list of citation counts (highest to lowest)
-        cites = sorted([paper.citation_count for paper in self._papers_with_cites], reverse=True)
+        cites = sorted(
+            [paper.citation_count for paper in self._papers_with_cites], reverse=True
+        )
 
         # Step through to calculate h-index
         h_index = 0
@@ -384,14 +418,22 @@ class CVPubBuilder:
         except KeyError:
             raise KeyError(f"No abbreviation found for journal {journal_name}")
 
+    @staticmethod
+    def _clean_title(title: str) -> str:
+        """Convert ADS HTML super/subscripts in titles to LaTeX math."""
+        title = re.sub(r"<SUP>(.*?)</SUP>", r"$^{\1}$", title)
+        title = re.sub(r"<SUB>(.*?)</SUB>", r"$_{\1}$", title)
+        return title
+
     def _format_latex_entry(self, paper: Article) -> str:
         """Format article info for LaTeX."""
-        # Start with title
-        info = (
+        # Start with title, starring highlighted papers
+        info = "\\keypaper " if paper.bibcode in self.highlight else ""
+        info += (
             "\\href{"
             f"https://ui.adsabs.harvard.edu/abs/{paper.bibcode}"
             "}{\\textit{"
-            f"{paper.title[0]}"
+            f"{self._clean_title(paper.title[0])}"
             "}} \\\\ \n"
         )
 
@@ -417,6 +459,12 @@ class CVPubBuilder:
         else:
             info += " "
 
+        # Add my contribution, if provided
+        dois = set(paper.doi or [])
+        notes = [self.contributions[doi] for doi in dois if doi in self.contributions]
+        if len(notes) > 0:
+            info += f"\\\\ \n{{\\small \\textit{{My role:}} {notes[0]}}}"
+
         info += "\n\n"
 
         return info
@@ -440,6 +488,24 @@ class CVPubBuilder:
 
         return output
 
+    def _format_unpublished(self) -> str:
+        """Format the section of papers not yet in ADS."""
+        if len(self.unpublished) == 0:
+            return ""
+
+        output = f"\\textbf{{{self.unpublished_title}}}\n\n"
+        output += f"\\begin{{{self.tex_list_env}}}\n"
+        for paper in self.unpublished:
+            authors = paper["authors"].replace(self.name, f"\\textbf{{{self.name}}}")
+            output += (
+                f"\\item \\textit{{{paper['title']}}} \\\\ \n"
+                f"{authors} ({paper['year']})\n"
+                f"\\textit{{{paper['status']}}}\n\n"
+            )
+        output += f"\\end{{{self.tex_list_env}}}\n\n"
+
+        return output
+
     def write_latex(self) -> None:
         """Write the publication lists in LaTeX format."""
         # Sort papers
@@ -455,16 +521,37 @@ class CVPubBuilder:
                 f"As of {now.strftime('%B %Y')}, "
                 f"I have (co-)authored {self.n_papers} publications "
                 f"with a total of {self.n_citations} citations "
-                f"(\\textit{{h}}-index {self.h_index}). \\vspace{{2mm}}\n\n"
+                f"(\\textit{{h}}-index {self.h_index}; full list on "
+                "\\href{https://ui.adsabs.harvard.edu/public-libraries/"
+                f"{self.lib_code}}}{{ADS}})."
             )
+            if len(self.highlight) > 0:
+                output += " $\\star$ marks my most significant papers."
+            output += " \\vspace{2mm}\n\n"
 
         output += self._format_section(primary, self.primary_config)
+        output += self._format_unpublished()
         output += self._format_section(secondary, self.secondary_config)
         output += self._format_section(tertiary, self.tertiary_config)
 
         # Write to file
         with open(self.tex_file, "w") as file:
             file.write(output)
+
+        # Write the statistics as macros for the CV summary
+        stats = {
+            "cvnpubs": self.n_papers,
+            "cvnfirst": len(primary),
+            "cvnreview": len(self.unpublished),
+            "cvncites": self.n_citations,
+            "cvhindex": self.h_index,
+        }
+        with open(self.stats_file, "w") as file:
+            file.write(
+                "% Generated by scripts/build_cv_pubs.py; do not edit by hand.\n"
+            )
+            for name, value in stats.items():
+                file.write(f"\\newcommand{{\\{name}}}{{{value}}}\n")
 
 
 def main():
@@ -512,14 +599,84 @@ def main():
     tertiary_config = {
         "title": "Other Co-Author Papers:",
         "intro": (
-            "The following include white papers and papers for which I was "
-            "granted authorship due to more minor contributions, my role "
-            "collecting or calibrating data, or my builder status within "
-            "the Rubin Observatory and the Dark Energy Science Collaboration."
+            "Includes papers on which my authorship reflects smaller "
+            "contributions, data collection or calibration, or my Rubin and "
+            "DESC Builder status, as well as white papers."
         ),
         "overrides": None,
     }
-    hide = ["10.71929/RUBIN/2570536"]
+    hide = [
+        "10.71929/RUBIN/2570536",
+        "10.48550/arXiv.2104.08229",  # arXiv version of the ApJS information-metric paper
+    ]
+
+    pzflow = "Created PZFlow, used in this work to "
+    rail = (
+        "Led development of RAIL's forward-modeling (creation) module: "
+        "normalizing flows, photometric error models, and spectroscopic "
+        "degradations."
+    )
+    dp1 = (
+        "Ran and optimized the active optics system to focus and collimate "
+        "the telescope during the observations."
+    )
+    malz = (
+        pzflow + "estimate the information metric with conditional normalizing flows."
+    )
+    contributions = {
+        "10.1093/mnras/stag1012": (  # DP1 photo-z paper (Zhang)
+            "Built the reference sample and its Euclid cross-match."
+        ),
+        "10.48550/arXiv.2505.02928": rail,  # RAIL paper (arXiv)
+        "10.33232/001c.158200": rail,  # RAIL paper (OJAp)
+        "10.1093/mnras/stae2519": (  # Spatial variability paper (Hang)
+            "Developed PhotErr and the RAIL forward-modeling tools used to "
+            "propagate depth variations."
+        ),
+        "10.3847/1538-4365/ad7d07": malz,  # Information metric (ApJS)
+        "10.3847/1538-4357/ad6cdc": (  # AOS degeneracy paper (Megias Homar)
+            "Helped devise the SVD control strategy and its weighting by impact "
+            "on image quality."
+        ),
+        "10.48550/arXiv.2603.23786": dp1,  # DP1 paper (arXiv)
+        "10.3847/1538-3881/ae521f": dp1,  # DP1 paper (AJ)
+        "10.48550/arXiv.2601.10797": pzflow + "model photo-$z$ biases.",  # Crafford
+        "10.1088/1538-3873/ac59bf": pzflow + "model photo-$z$ biases.",  # Stylianou
+        "10.3847/2041-8213/ad4039": pzflow
+        + "generate the augmented training galaxies.",  # Moskowitz
+        "10.1093/mnras/stad302": pzflow
+        + "model correlated host-galaxy properties.",  # SCOTCH
+    }
+
+    # Most significant papers, starred in the list
+    highlight = {
+        "2025ApJS..281...54C",  # u-band survey strategy and LBGs
+        "2026ApJ..1009L..13C",  # DP1 circumgalactic dust
+        "2024AJ....168...80C",  # PZFlow
+    }
+
+    # Papers not yet in ADS, listed after the first-author papers
+    unpublished = [
+        {
+            "title": (
+                "Cosmology with LSST Lyman-break Galaxies: Forecasts from "
+                "Clustering and CMB-Lensing Cross-Correlations with Realistic "
+                "Systematics"
+            ),
+            "authors": "Crenshaw J. F., Šarčević N., Sherwin B., et al.",
+            "year": 2026,
+            "status": "in DESC collaboration review",
+        },
+        {
+            "title": (
+                "Disentangling Shape and Intensity Information in Defocused "
+                "Wavefront Estimation"
+            ),
+            "authors": "Crenshaw J. F., Megias Homar G., et al.",
+            "year": 2026,
+            "status": "in Rubin Observatory internal review",
+        },
+    ]
 
     cvpb = CVPubBuilder(
         lib_code=LIB_CODE,
@@ -529,6 +686,9 @@ def main():
         secondary_config=secondary_config,
         tertiary_config=tertiary_config,
         hide=hide,
+        contributions=contributions,
+        highlight=highlight,
+        unpublished=unpublished,
     )
 
     cvpb.write_latex()
